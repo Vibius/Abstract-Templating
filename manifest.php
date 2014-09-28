@@ -5,7 +5,7 @@
     "components" => [
         "AbstractTemplating" => [
             "alias" => "view",
-            "provider" => "\Vibius\AbstractTemplating\Abstractor"
+            "provider" => "\Vibius\AbstractTemplating\Abstractor( new Vibius\AbstractTemplating\Engines\Twig() , '/app/views/')"
         ]
     ]
 
