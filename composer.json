@@ -19,6 +19,7 @@
     "minimum-stability":"dev",
     "require": {
         "twig/twig":"1.*",
+        "vibius/filesystem":"dev-master",
         "php": ">=5.4.0"
     }
 }    
