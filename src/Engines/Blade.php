@@ -18,11 +18,11 @@ class Blade implements EngineInterface{
 	];
 
 	public $engine;
-	
-	public function __construct(){
+
+	public function __construct($viewPath, $cachePath){
 		
-		$views = vibius_BASEPATH. 'app/views/';
-		$cache = vibius_BASEPATH. '/app/cache/templating';
+		$views = vibius_BASEPATH.$viewPath;
+		$cache = vibius_BASEPATH. $cachePath;
 		$this->engine = new LaravelBlade($views, $cache);
 
 	}
