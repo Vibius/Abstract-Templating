@@ -3,25 +3,27 @@
 namespace Vibius\AbstractTemplating\Engines;
 
 use Vibius\AbstractTemplating\EngineInterface;
+use Philo\Blade\Blade as LaravelBlade;
 
-class Twig implements EngineInterface{
+class Blade implements EngineInterface{
 
 	use \Vibius\AbstractTemplating\EngineHelpers;
 
 	public $variables = [];
 
-	public $htmlParseable = true;
+	public $htmlParseable = false;
 
 	public $extensions = [
-		'php', 'html','blade.php', 'tpl.php', 'tpl'
+		'php', 'blade.php'
 	];
 
 	public $engine;
-
+	
 	public function __construct(){
 		
-		$loader = new \Twig_Loader_String();
-		$this->engine = new \Twig_Environment($loader);
+		$views = vibius_BASEPATH. 'app/views/';
+		$cache = vibius_BASEPATH. '/app/cache/templating';
+		$this->engine = new LaravelBlade($views, $cache);
 
 	}
 
@@ -30,7 +32,7 @@ class Twig implements EngineInterface{
 	}
 
 	public function render($content){
-		echo $this->engine->render($content, $this->variables);
+		echo $this->engine->view()->make($content)->with($this->variables);
 	}
 
 

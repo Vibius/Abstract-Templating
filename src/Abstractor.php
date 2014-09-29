@@ -11,6 +11,7 @@ class Abstractor{
 	function __construct( EngineInterface $engine, $folderPath = false){
 		
 		$this->engine = $engine;
+
 		$this->folderPath = '/app/views/';
 		
 		if( $folderPath ){
@@ -21,18 +22,26 @@ class Abstractor{
 
 	public function load($file){
 
-		$fileSource = $this->folderPath.$file.'.html';
+		$fileSource = $this->folderPath.$file;
 
-		if( FileSystem::has($fileSource) ){
+		foreach($this->engine->extensions as $extension){
+			if(  FileSystem::has($fileSource.'.'.$extension) ){
 			
-			$load = FileSystem::read($fileSource);
-			
-			$this->files[$file] = $load;
-			$this->lastFile = $file;
-
-			return $this;
+				if($this->engine->htmlParseable){
+					$load = FileSystem::read($fileSource.'.'.$extension);
+					
+					$this->files[$file] = $load;
+					$this->lastFile = $file;
+				}else{
+					$this->files[$file] = $file;
+					$this->lastFile = $file;
+				}
+				
+				break;
+			}
 		}
 
+		return $this;
 		throw new Exception(' View not found at path: '. $file);
 	}
 
@@ -58,9 +67,14 @@ class Abstractor{
 			$file = $filePath;
 		}
 
-		if( $content= $this->getView($file) ){
+		$content = $this->getView($file);
+
 			$this->engine->render($content);
-		}
+		
+	}
+
+	public function getEngine(){
+		return $this->engine->getEngine();
 	}
 
 
